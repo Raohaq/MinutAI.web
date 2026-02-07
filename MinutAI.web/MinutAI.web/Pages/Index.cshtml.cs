@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MinutAI.web.Pages
 {
+    [Authorize]
     [RequestSizeLimit(300 * 1024 * 1024)]
     public class IndexModel : PageModel
     {
