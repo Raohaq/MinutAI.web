@@ -1,0 +1,36 @@
+@page
+@model MinutAI.web.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Create Account</h1>
+
+<form method="post">
+    <div>
+        <label>Email</label><br />
+        <input asp-for="Input.Email" />
+        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Email)</div>
+    </div>
+    <br />
+    <div>
+        <label>Password</label><br />
+        <input asp-for="Input.Password" type="password" />
+        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Password)</div>
+    </div>
+    <br />
+    <div>
+        <label>Confirm Password</label><br />
+        <input asp-for="Input.ConfirmPassword" type="password" />
+        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.ConfirmPassword)</div>
+    </div>
+    <br />
+    <button type="submit">Register</button>
+</form>
+
+@if (Model.ErrorMessage != null)
+{
+<p style="color:red"><b>@Model.ErrorMessage</b></p>
+}
+
+<p>Already have an account? <a asp-page="/Account/Login">Login</a></p>
