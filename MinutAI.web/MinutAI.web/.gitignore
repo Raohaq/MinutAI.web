@@ -1,0 +1,22 @@
+# .NET build
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# LibMan / client libs (optional but recommended)
+MinutAI.web/wwwroot/lib/
+
+# Python
+venv/
+_pycache_/
+*.pyc
+
+# Generated / data
+outputs/
+uploads/
+test_audio/
+*.db

@@ -1,0 +1,50 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "MinutAI";
+}
+
+<h1>MinutAI – AI Meeting Summariser</h1>
+
+<div style="max-width:900px; margin:auto;">
+
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="AudioFile" required />
+        <br /><br />
+
+        <label>
+            <input type="checkbox" name="ConsentConfirmed" value="true" />
+            I confirm this meeting was recorded with consent.
+        </label>
+
+        <br /><br />
+
+        <div id="loading" style="display:none; margin-top:10px;">
+            <b>Processing... please wait.</b>
+        </div>
+
+        <button type="submit" onclick="document.getElementById('loading').style.display='block';">
+            Upload & Process
+        </button>
+    </form>
+</div>
+
+
+@if (Model.StatusMessage != null)
+{
+<p><b>@Model.StatusMessage</b></p>
+}
+
+@if (Model.Transcript != null)
+{
+<hr />
+<h2>Transcript</h2>
+<textarea rows="10" style="width:100%;" readonly>@Model.Transcript</textarea>
+
+<h2>Summary</h2>
+<textarea rows="6" style="width:100%;" readonly>@Model.Summary</textarea>
+
+<h2>Action Items</h2>
+<textarea rows="6" style="width:100%;" readonly>@Model.ActionItems</textarea>
+}
