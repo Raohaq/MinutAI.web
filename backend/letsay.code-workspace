@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "../.vs"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../frontend"
+		},
+		{
+			"path": "../outputs"
+		},
+		{
+			"path": "../README.md"
+		},
+		{
+			"path": "../requirements.txt"
+		},
+		{
+			"path": "../test_audio"
+		},
+		{
+			"path": "../uploads"
+		},
+		{
+			"path": "../venv"
+		}
+	]
+}
