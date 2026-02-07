@@ -1,22 +1,26 @@
+# OS / Editor
+.vs/
+.vscode/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# .NET build
+**/bin/
+**/obj/
+
+# LibMan / client libs
+MinutAI.web/wwwroot/lib/
+
 # Python
 venv/
 _pycache_/
 *.pyc
 
-# .NET
-bin/
-obj/
-*.user
-*.suo
-
-# Local data
-minutai.db
-*.db
+# Local data / generated
 outputs/
+uploads/
 test_audio/
+*.db
 *.log
-
-# OS
-.DS_Store
-Thumbs.db
-
