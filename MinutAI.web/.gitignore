@@ -1,0 +1,22 @@
+# Python
+venv/
+_pycache_/
+*.pyc
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# Local data
+minutai.db
+*.db
+outputs/
+test_audio/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
