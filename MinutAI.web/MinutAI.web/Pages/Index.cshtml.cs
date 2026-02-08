@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Text;
+ 
 namespace MinutAI.web.Pages
 {
     [Authorize]
@@ -23,8 +24,8 @@ namespace MinutAI.web.Pages
         public string? StatusMessage { get; set; }
 
         public void OnGet() { }
-
-        public void OnPost()
+ 
+        public async Task<IActionResult> OnPostAsync()
         {
             Console.WriteLine("\n=== OnPost triggered ===");
             Console.WriteLine($"ConsentConfirmed raw: {ConsentConfirmed}");
@@ -33,7 +34,7 @@ namespace MinutAI.web.Pages
             {
                 StatusMessage = "Please upload an audio file.";
                 Console.WriteLine("No file uploaded.");
-                return;
+                                return Page();
             }
 
             bool consent = ConsentConfirmed == "true" || ConsentConfirmed == "on";
@@ -41,7 +42,7 @@ namespace MinutAI.web.Pages
             {
                 StatusMessage = "Please confirm meeting consent before processing.";
                 Console.WriteLine("Consent not confirmed.");
-                return;
+                                return Page();
             }
 
             // Robust project root detection (works even if app runs from bin\Debug\net8.0)
@@ -72,25 +73,25 @@ namespace MinutAI.web.Pages
 
             Console.WriteLine($"Saving upload to: {uploadedAudioPath}");
 
-            using (var stream = new FileStream(uploadedAudioPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                await using (var stream = new FileStream(uploadedAudioPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
-                AudioFile.CopyTo(stream);
+                await AudioFile.CopyToAsync(stream);
             }
 
             // Run pipeline
             StatusMessage = "Step 1/4: Transcribing audio (Whisper)...";
-            RunPython(pythonExe, Path.Combine(backendDir, "whisper_test.py"), projectRoot, $"\"{uploadedAudioPath}\"");
+            await RunPythonAsync(pythonExe, Path.Combine(backendDir, "whisper_test.py"), projectRoot, $"\"{uploadedAudioPath}\"");
 
-            System.Threading.Thread.Sleep(300);
+            await Task.Delay(300);
 
             StatusMessage = "Step 2/4: Cleaning transcript...";
-            RunPython(pythonExe, Path.Combine(backendDir, "text_cleaner.py"), projectRoot, "");
+            await RunPythonAsync(pythonExe, Path.Combine(backendDir, "text_cleaner.py"), projectRoot, "");
 
             StatusMessage = "Step 3/4: Generating summary...";
-            RunPython(pythonExe, Path.Combine(backendDir, "summariser.py"), projectRoot, "");
+            await RunPythonAsync(pythonExe, Path.Combine(backendDir, "summariser.py"), projectRoot, "");
 
             StatusMessage = "Step 4/4: Extracting action items...";
-            RunPython(pythonExe, Path.Combine(backendDir, "action_extractor.py"), projectRoot, "");
+            await RunPythonAsync(pythonExe, Path.Combine(backendDir, "action_extractor.py"), projectRoot, "");
 
             // Read outputs (shared output files)
             var transcriptPath = Path.Combine(outputsDir, "transcript.txt");
@@ -105,6 +106,8 @@ namespace MinutAI.web.Pages
 
             StatusMessage = "Processing completed successfully.";
             Console.WriteLine("=== Processing completed successfully ===");
+            
+                        return Page();
         }
 
         // Step 1: Robust root finder
@@ -125,45 +128,75 @@ namespace MinutAI.web.Pages
 
             throw new Exception("Project root not found. Could not locate 'backend' and 'venv' folders above runtime directory.");
         }
-
-        // Step 3 + timeout + prints output
-        private void RunPython(string pythonExe, string scriptPath, string workingDir, string extraArgs)
+ 
+         // Step 3 + timeout + prints output
+        private async Task RunPythonAsync(string pythonExe, string scriptPath, string workingDir, string extraArgs)
         {
             Console.WriteLine($"\n--- Running Python ---\n{pythonExe}\n{scriptPath} {extraArgs}\nWorkingDir: {workingDir}");
 
-            var psi = new ProcessStartInfo
-            {
-                FileName = pythonExe,
-                Arguments = $"\"{scriptPath}\" {extraArgs}",
-                WorkingDirectory = workingDir,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+            var stdOutBuilder = new StringBuilder();
+            var stdErrBuilder = new StringBuilder();
+            
+                         var psi = new ProcessStartInfo
+                         {
+                             FileName = pythonExe,
+                             Arguments = $"\"{scriptPath}\" {extraArgs}",
+                             WorkingDirectory = workingDir,
+                             RedirectStandardOutput = true,
+                             RedirectStandardError = true,
+                             UseShellExecute = false,
+                             CreateNoWindow = true
+                         };
 
             using var process = Process.Start(psi);
             if (process == null)
                 throw new Exception("Failed to start Python process.");
 
-            string stdOut = process.StandardOutput.ReadToEnd();
-            string stdErr = process.StandardError.ReadToEnd();
+            process.OutputDataReceived += (_, args) =>
+                        {
+                                if (args.Data != null)
+                                    {
+                    stdOutBuilder.AppendLine(args.Data);
+                                    }
+                            };
+            process.ErrorDataReceived += (_, args) =>
+                        {
+                                if (args.Data != null)
+                                    {
+                    stdErrBuilder.AppendLine(args.Data);
+                                    }
+                            };
+            
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
 
             // Step 4: timeout protection (10 minutes)
-            if (!process.WaitForExit(10 * 60 * 1000))
+                var timeoutTask = Task.Delay(TimeSpan.FromMinutes(10));
+            var exitTask = process.WaitForExitAsync();
+            var completedTask = await Task.WhenAny(exitTask, timeoutTask);
+            
+                        if (completedTask == timeoutTask)
             {
                 try { process.Kill(true); } catch { }
                 throw new Exception("Python process timed out.");
             }
 
-            if (!string.IsNullOrWhiteSpace(stdOut))
-                Console.WriteLine("STDOUT:\n" + stdOut);
+            await exitTask;
+            
+            string stdOut = stdOutBuilder.ToString();
+            string stdErr = stdErrBuilder.ToString();
+            
+             if (!string.IsNullOrWhiteSpace(stdOut))
+                Console.WriteLine("STDOUT:\n",  stdOut);
 
-            if (!string.IsNullOrWhiteSpace(stdErr))
-                Console.WriteLine("STDERR:\n" + stdErr);
+            if (!string.IsNullOrWhiteSpace(stdErr)) 
+                Console.WriteLine("STDERR:\n",  stdErr);
 
             if (process.ExitCode != 0)
                 throw new Exception($"Python script failed:\n{scriptPath}\n\n{stdErr}");
         }
     }
 }
+
+
+
