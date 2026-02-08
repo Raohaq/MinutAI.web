@@ -30,6 +30,12 @@
     </form>
 </div>
 
+<div class="mt-3">
+    <form method="post" asp-page="/Account/Logout">
+        <button type="submit" class="btn btn-outline-danger">Logout</button>
+    </form>
+</div>
+
 
 @if (Model.StatusMessage != null)
 {
