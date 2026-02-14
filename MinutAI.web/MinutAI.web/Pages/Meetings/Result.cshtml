@@ -22,14 +22,16 @@
 
     <hr />
 
+    <h2>Transcript</h2>
+    <textarea rows="12" style="width:100%;" readonly>@Model.Meeting.Transcript</textarea>
+
     <h2>Summary</h2>
     <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.Summary</textarea>
 
     <h2>Action Items</h2>
     <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.ActionItems</textarea>
 
-    <h2>Transcript</h2>
-    <textarea rows="12" style="width:100%;" readonly>@Model.Meeting.Transcript</textarea>
+
 
     <br />
     <a class="btn btn-primary" asp-page="/Index">Process another meeting</a>
