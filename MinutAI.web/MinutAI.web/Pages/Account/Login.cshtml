@@ -9,16 +9,20 @@
 <form method="post">
     <div>
         <label>Email</label><br />
-        <input asp-for="Input.Email" />
-        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Email)</div>
+        <input asp-for="Email" />
+        <span style="color:red" asp-validation-for="Email"></span>
     </div>
+
     <br />
+
     <div>
         <label>Password</label><br />
-        <input asp-for="Input.Password" type="password" />
-        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Password)</div>
+        <input asp-for="Password" type="password" />
+        <span style="color:red" asp-validation-for="Password"></span>
     </div>
+
     <br />
+
     <button type="submit">Login</button>
 </form>
 

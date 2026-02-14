@@ -1,52 +1,49 @@
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MinutAI.web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Razor Pages
 builder.Services.AddRazorPages();
 
-// DB (SQLite)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// SQLite DbContext
+var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlite(conn));
 
-// Identity (Login/Register)
-builder.Services.AddIdentityCore<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddSignInManager()
-.AddDefaultTokenProviders();
-
-//builder.Services.AddAuthentication()
+// Cookie Authentication (your custom pages in /Pages/Account)
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultAuthenticateScheme = "Cookies";
+    options.DefaultChallengeScheme = "Cookies";
+    options.DefaultSignInScheme = "Cookies";
 })
-    .AddIdentityCookies();
+.AddCookie("Cookies", options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/Login";
+});
 
+// Authorization (needed because you use [Authorize])
+builder.Services.AddAuthorization();
 
-// Increase upload limits (e.g., up to 300MB)
+// Upload limits (for large audio files)
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.MultipartBodyLengthLimit = 300 * 1024 * 1024; // 300 MB
+    options.MultipartBodyLengthLimit = 300 * 1024 * 1024; // 300MB
 });
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Limits.MaxRequestBodySize = 300 * 1024 * 1024; // 300 MB
+    options.Limits.MaxRequestBodySize = 300 * 1024 * 1024; // 300MB
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -63,4 +60,4 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.Run();
+app.Run();S

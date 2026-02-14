@@ -1,0 +1,37 @@
+@page "{id:int?}"
+@model MinutAI.web.Pages.Meetings.ResultModel
+@{
+    ViewData["Title"] = "Meeting Results";
+}
+
+<div style="max-width:1000px; margin:auto;">
+    <h1>MinutAI – Meeting Results</h1>
+
+    @if (Model.Meeting == null)
+    {
+    <p>Meeting not found.</p>
+    <a asp-page="/Index">Back to Upload</a>
+    }
+    else
+    {
+    <p>
+        <b>File:</b> @Model.Meeting.AudioFileName
+        &nbsp; | &nbsp;
+        <b>Date:</b> @Model.Meeting.CreatedAt.ToLocalTime()
+    </p>
+
+    <hr />
+
+    <h2>Summary</h2>
+    <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.Summary</textarea>
+
+    <h2>Action Items</h2>
+    <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.ActionItems</textarea>
+
+    <h2>Transcript</h2>
+    <textarea rows="12" style="width:100%;" readonly>@Model.Meeting.Transcript</textarea>
+
+    <br />
+    <a class="btn btn-primary" asp-page="/Index">Process another meeting</a>
+    }
+</div>

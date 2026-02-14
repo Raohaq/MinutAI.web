@@ -1,63 +1,68 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-
+using MinutAI.web.Data;
+using MinutAI.web.Models;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace MinutAI.web.Pages.Account
 {
-    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ApplicationDbContext _db;
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(ApplicationDbContext db)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _db = db;
         }
 
-        [BindProperty]
-        public RegisterInput Input { get; set; } = new();
+        [BindProperty, Required]
+        public string FullName { get; set; } = "";
+
+        [BindProperty, Required, EmailAddress]
+        public string Email { get; set; } = "";
+
+        [BindProperty, Required]
+        public string Password { get; set; } = "";
+
+        [BindProperty, Required]
+        public string ConfirmPassword { get; set; } = "";
 
         public string? ErrorMessage { get; set; }
-
-        public class RegisterInput
-        {
-            [Required, EmailAddress]
-            public string Email { get; set; } = "";
-
-            [Required, MinLength(6)]
-            public string Password { get; set; } = "";
-
-            [Required, Compare(nameof(Password))]
-            public string ConfirmPassword { get; set; } = "";
-        }
 
         public void OnGet() { }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid)
+                return Page();
 
-            var user = new IdentityUser
+            if (Password != ConfirmPassword)
             {
-                UserName = Input.Email,
-                Email = Input.Email,
-                EmailConfirmed = true
-            };
-
-            var result = await _userManager.CreateAsync(user, Input.Password);
-
-            if (!result.Succeeded)
-            {
-                ErrorMessage = string.Join(" | ", result.Errors.Select(e => e.Description));
+                ErrorMessage = "Passwords do not match.";
                 return Page();
             }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
+            // Check if email already exists
+            var exists = await _db.Users.AnyAsync(u => u.Email == Email);
+            if (exists)
+            {
+                ErrorMessage = "This email is already registered.";
+                return Page();
+            }
+
+            // Create user + hash password with BCrypt (no Identity)
+            var user = new AppUser
+            {
+                FullName = FullName,
+                Email = Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password)
+            };
+
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            // Redirect to upload page
             return RedirectToPage("/Index");
         }
     }

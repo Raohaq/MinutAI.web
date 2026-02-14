@@ -1,50 +1,63 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.EntityFrameworkCore;
+using MinutAI.web.Data;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace MinutAI.web.Pages.Account
 {
-    [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ApplicationDbContext _db;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(ApplicationDbContext db)
         {
-            _signInManager = signInManager;
+            _db = db;
         }
 
-        [BindProperty]
-        public LoginInput Input { get; set; } = new();
+        [BindProperty, Required, EmailAddress]
+        public string Email { get; set; } = "";
+
+        [BindProperty, Required]
+        public string Password { get; set; } = "";
 
         public string? ErrorMessage { get; set; }
-
-        public class LoginInput
-        {
-            [Required, EmailAddress]
-            public string Email { get; set; } = "";
-
-            [Required]
-            public string Password { get; set; } = "";
-        }
 
         public void OnGet() { }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid)
+                return Page();
 
-            var result = await _signInManager.PasswordSignInAsync(
-                Input.Email, Input.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if (!result.Succeeded)
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == Email);
+            if (user == null)
             {
-                ErrorMessage = "Invalid login attempt. Check your email and password.";
+                ErrorMessage = "Invalid email or password.";
                 return Page();
             }
+
+            // ✅ Verify password using BCrypt (no Identity needed)
+            bool valid = BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash);
+            if (!valid)
+            {
+                ErrorMessage = "Invalid email or password.";
+                return Page();
+            }
+
+            // ✅ Create cookie claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
 
             return RedirectToPage("/Index");
         }

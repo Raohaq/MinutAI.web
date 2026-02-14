@@ -4,11 +4,9 @@
     ViewData["Title"] = "MinutAI";
 }
 
-<h1>MinutAI – AI Meeting Summariser</h1>
+<h1>MinutAI – Upload Meeting Audio</h1>
 
 <div style="max-width:900px; margin:auto;">
-
-
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="AudioFile" required />
         <br /><br />
@@ -30,27 +28,7 @@
     </form>
 </div>
 
-<div class="mt-3">
-    <form method="post" asp-page="/Account/Logout">
-        <button type="submit" class="btn btn-outline-danger">Logout</button>
-    </form>
-</div>
-
-
 @if (Model.StatusMessage != null)
 {
 <p><b>@Model.StatusMessage</b></p>
-}
-
-@if (Model.Transcript != null)
-{
-<hr />
-<h2>Transcript</h2>
-<textarea rows="10" style="width:100%;" readonly>@Model.Transcript</textarea>
-
-<h2>Summary</h2>
-<textarea rows="6" style="width:100%;" readonly>@Model.Summary</textarea>
-
-<h2>Action Items</h2>
-<textarea rows="6" style="width:100%;" readonly>@Model.ActionItems</textarea>
 }

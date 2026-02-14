@@ -8,23 +8,37 @@
 
 <form method="post">
     <div>
-        <label>Email</label><br />
-        <input asp-for="Input.Email" />
-        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Email)</div>
+        <label>Full Name</label><br />
+        <input asp-for="FullName" />
+        <span style="color:red" asp-validation-for="FullName"></span>
     </div>
+
     <br />
+
+    <div>
+        <label>Email</label><br />
+        <input asp-for="Email" />
+        <span style="color:red" asp-validation-for="Email"></span>
+    </div>
+
+    <br />
+
     <div>
         <label>Password</label><br />
-        <input asp-for="Input.Password" type="password" />
-        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.Password)</div>
+        <input asp-for="Password" type="password" />
+        <span style="color:red" asp-validation-for="Password"></span>
     </div>
+
     <br />
+
     <div>
         <label>Confirm Password</label><br />
-        <input asp-for="Input.ConfirmPassword" type="password" />
-        <div style="color:red">@Html.ValidationMessageFor(m => m.Input.ConfirmPassword)</div>
+        <input asp-for="ConfirmPassword" type="password" />
+        <span style="color:red" asp-validation-for="ConfirmPassword"></span>
     </div>
+
     <br />
+
     <button type="submit">Register</button>
 </form>
 
