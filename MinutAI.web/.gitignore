@@ -1,33 +1,59 @@
+# -----------------------
 # OS / Editor
-.vs/
-.vscode/
-*.user
-*.suo
+# -----------------------
 .DS_Store
 Thumbs.db
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# .NET build
-**/bin/ 
+# -----------------------
+# .NET / Visual Studio build
+# -----------------------
+**/bin/
 **/obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.cache
+*.pdb
 
-# LibMan / client libs
-MinutAI.web/wwwroot/lib/
-
+# -----------------------
 # Python
+# -----------------------
 venv/
+.venv/
 _pycache_/
 *.pyc
+*.pyo
+*.pyd
 
-# Local data / generated
+# -----------------------
+# Local/generated data (do NOT commit)
+# -----------------------
 outputs/
 uploads/
 test_audio/
 *.db
-venv/
-outputs/
-test_audio/
-uploads/
-*.db
+*.sqlite
+*.sqlite3
+*.log
 
-# LibMan / client libraries
+# Also ignore nested duplicates if they exist
+MinutAI.web/outputs/
+MinutAI.web/uploads/
+MinutAI.web/test_audio/
+MinutAI.web/venv/
+
+# LibMan / client libraries (restoreable)
 MinutAI.web/wwwroot/lib/
+
+# -----------------------
+# Secrets (just in case)
+# -----------------------
+*/appsettings..json.user
+*/*secrets.json

@@ -1,39 +1,60 @@
-@page "{id:int?}"
+@page
 @model MinutAI.web.Pages.Meetings.ResultModel
 @{
     ViewData["Title"] = "Meeting Results";
 }
 
-<div style="max-width:1000px; margin:auto;">
-    <h1>MinutAI – Meeting Results</h1>
+<h2>Meeting Results</h2>
 
-    @if (Model.Meeting == null)
-    {
-    <p>Meeting not found.</p>
-    <a asp-page="/Index">Back to Upload</a>
-    }
-    else
-    {
-    <p>
-        <b>File:</b> @Model.Meeting.AudioFileName
-        &nbsp; | &nbsp;
-        <b>Date:</b> @Model.Meeting.CreatedAt.ToLocalTime()
-    </p>
-
-    <hr />
-
-    <h2>Transcript</h2>
-    <textarea rows="12" style="width:100%;" readonly>@Model.Meeting.Transcript</textarea>
-
-    <h2>Summary</h2>
-    <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.Summary</textarea>
-
-    <h2>Action Items</h2>
-    <textarea rows="7" style="width:100%;" readonly>@Model.Meeting.ActionItems</textarea>
-
-
-
-    <br />
-    <a class="btn btn-primary" asp-page="/Index">Process another meeting</a>
-    }
+<div class="mb-3">
+    <a class="btn btn-secondary btn-sm" asp-page="/Meetings/History">History</a>
+    <a class="btn btn-success btn-sm"
+       asp-page="/Meetings/Result"
+       asp-route-id="@Model.Meeting?.Id"
+       asp-page-handler="DownloadAll">
+        Download All (ZIP)
+    </a>
+        <a class="btn btn-primary btn-sm" asp-page="/Index">Process Another Meeting</a>
 </div>
+
+<hr />
+
+<h3>Transcript</h3>
+<div class="mb-2">
+    <a class="btn btn-outline-dark btn-sm"
+       asp-page="/Meetings/Result"
+       asp-route-id="@Model.Meeting?.Id"
+       asp-page-handler="Download"
+       asp-route-type="transcript">
+        Download Transcript
+    </a>
+</div>
+<textarea rows="12" style="width:100%;" readonly>@Model.Meeting?.Transcript</textarea>
+
+<hr />
+
+<h3>Summary</h3>
+<div class="mb-2">
+    <a class="btn btn-outline-dark btn-sm"
+       asp-page="/Meetings/Result"
+       asp-route-id="@Model.Meeting?.Id"
+       asp-page-handler="Download"
+       asp-route-type="summary">
+        Download Summary
+    </a>
+</div>
+<textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.Summary</textarea>
+
+<hr />
+
+<h3>Action Items</h3>
+<div class="mb-2">
+    <a class="btn btn-outline-dark btn-sm"
+       asp-page="/Meetings/Result"
+       asp-route-id="@Model.Meeting?.Id"
+       asp-page-handler="Download"
+       asp-route-type="actions">
+        Download Action Items
+    </a>
+</div>
+<textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.ActionItems</textarea>
