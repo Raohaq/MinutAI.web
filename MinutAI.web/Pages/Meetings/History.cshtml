@@ -1,0 +1,65 @@
+﻿@page
+@model MinutAI.web.Pages.Meetings.HistoryModel
+@{
+    ViewData["Title"] = "My Meeting History";
+}
+
+<h2>My Meeting History</h2>
+
+<p>
+    <a class="btn btn-primary btn-sm" asp-page="/Index">Process New Meeting</a>
+</p>
+
+@if (Model.Meetings == null || Model.Meetings.Count == 0)
+{
+        <p>No meetings found yet.</p>
+}
+else
+{
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    @* <th style="width:70px;">ID</th> *@
+                    <th style="width:170px;">Date</th>
+                    <th style="width:220px;">Audio File</th>
+                    <th>Summary Preview</th>
+                    <th style="width:240px;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var m in Model.Meetings)
+            {
+                    <tr>
+                        @* <td>@m.Id</td> *@
+                        <td>@m.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                        <td>@m.AudioFileName</td>
+                        <td>@Model.Preview(m.Summary)</td>
+
+                        <td class="d-flex gap-2">
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page="/Meetings/Result"
+                               asp-route-id="@m.Id">
+                                View
+                            </a>
+
+                            <a class="btn btn-sm btn-outline-success"
+                               asp-page="/Meetings/History"
+                               asp-route-id="@m.Id"
+                               asp-page-handler="DownloadZip">
+                                Download ZIP
+                            </a>
+
+                            <form method="post" asp-page-handler="Delete"
+                                  onsubmit="return confirm('Delete this meeting from your history?');">
+                                <input type="hidden" name="id" value="@m.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+}

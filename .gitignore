@@ -1,0 +1,59 @@
+# -----------------------
+# OS / Editor
+# -----------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# -----------------------
+# .NET / Visual Studio build
+# -----------------------
+**/bin/
+**/obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.cache
+*.pdb
+
+# -----------------------
+# Python
+# -----------------------
+venv/
+.venv/
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+
+# -----------------------
+# Local/generated data (do NOT commit)
+# -----------------------
+outputs/
+uploads/
+test_audio/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Also ignore nested duplicates if they exist
+MinutAI.web/outputs/
+MinutAI.web/uploads/
+MinutAI.web/test_audio/
+MinutAI.web/venv/
+
+# LibMan / client libraries (restoreable)
+MinutAI.web/wwwroot/lib/
+
+# -----------------------
+# Secrets (just in case)
+# -----------------------
+*/appsettings..json.user
+*/*secrets.json
