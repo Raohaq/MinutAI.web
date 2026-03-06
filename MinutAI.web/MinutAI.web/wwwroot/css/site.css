@@ -1,4 +1,4 @@
-html {
+/*html {
   font-size: 14px;
 }
 
@@ -27,4 +27,155 @@ body {
 
 h1 {
     color: red !important;
+}*/
+
+
+
+
+/* ---------- Theme base ---------- */
+:root {
+    --brand: #14a3b8; /* teal */
+    --brand-dark: #0e7f90;
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --text: #1f2a33;
+    --muted: #6b7a88;
+    --border: #e6edf2;
+    --shadow: 0 10px 25px rgba(16, 24, 40, 0.08);
+    --radius: 16px;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- Teal header for normal pages ---------- */
+.app-header {
+    background: linear-gradient(90deg, var(--brand-dark), var(--brand));
+    color: #fff;
+}
+
+.navbar-brand .brand-logo {
+    height: 32px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.navbar .nav-link, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+    .navbar .nav-link:hover {
+        opacity: 0.9;
+    }
+
+/* ---------- Cards ---------- */
+.card-soft {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+    .card-soft .card-header {
+        background: transparent;
+        border-bottom: 1px solid var(--border);
+        font-weight: 600;
+    }
+
+/* ---------- Buttons ---------- */
+.btn-brand {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+}
+
+    .btn-brand:hover {
+        background: var(--brand-dark);
+        border-color: var(--brand-dark);
+        color: #fff;
+    }
+
+.btn-outline-brand {
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
+    .btn-outline-brand:hover {
+        background: var(--brand);
+        color: #fff;
+    }
+
+/* ---------- Inputs ---------- */
+.form-control, .form-select {
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+    .form-control:focus {
+        border-color: rgba(20, 163, 184, 0.4);
+        box-shadow: 0 0 0 0.2rem rgba(20, 163, 184, 0.15);
+    }
+
+/* ---------- Auth pages (Login/Register) ---------- */
+body.auth-page {
+    background: linear-gradient(135deg, #0e7f90 0%, #14a3b8 45%, #6ee7f0 100%);
+}
+
+.auth-wrap {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 22px;
+}
+
+.auth-logo {
+    display: block;
+    width: 220px;
+    max-width: 75%;
+    margin: 8px auto 18px auto;
+}
+
+.auth-title {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+/* ---------- Result boxes ---------- */
+.output-box {
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background: #fbfdff;
+}
+
+/* ---------- Spacing helpers ---------- */
+.page-wrap {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 10px;
 }

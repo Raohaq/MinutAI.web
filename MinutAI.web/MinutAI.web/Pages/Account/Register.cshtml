@@ -1,50 +1,116 @@
+@* @page *@
+@* @model MinutAI.web.Pages.Account.RegisterModel *@
+@* @{ *@
+@*     ViewData["Title"] = "Register"; *@
+@* } *@
+
+@* <h1>Create Account</h1> *@
+
+@* <form method="post"> *@
+@*     <div> *@
+@*         <label>Full Name</label><br /> *@
+@*         <input asp-for="FullName" /> *@
+@*         <span style="color:red" asp-validation-for="FullName"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <div> *@
+@*         <label>Email</label><br /> *@
+@*         <input asp-for="Email" /> *@
+@*         <span style="color:red" asp-validation-for="Email"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <div> *@
+@*         <label>Password</label><br /> *@
+@*         <input asp-for="Password" type="password" /> *@
+@*         <span style="color:red" asp-validation-for="Password"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <div> *@
+@*         <label>Confirm Password</label><br /> *@
+@*         <input asp-for="ConfirmPassword" type="password" /> *@
+@*         <span style="color:red" asp-validation-for="ConfirmPassword"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <button type="submit">Register</button> *@
+@* </form> *@
+
+@* @if (Model.ErrorMessage != null) *@
+@* { *@
+@* <p style="color:red"><b>@Model.ErrorMessage</b></p> *@
+@* } *@
+
+@* <p>Already have an account? <a asp-page="/Account/Login">Login</a></p> *@
+
+
+
+
+
 @page
 @model MinutAI.web.Pages.Account.RegisterModel
 @{
     ViewData["Title"] = "Register";
+    ViewData["BodyClass"] = "auth-page";
 }
 
-<h1>Create Account</h1>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <img src="~/images/MinutAI logo.png" class="auth-logo" alt="MinutAI Logo" />
 
-<form method="post">
-    <div>
-        <label>Full Name</label><br />
-        <input asp-for="FullName" />
-        <span style="color:red" asp-validation-for="FullName"></span>
+        <h2 class="auth-title">Create account</h2>
+        <p class="text-center text-muted mb-4">Create your account to start summarising meetings.</p>
+
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control" placeholder="Your name" />
+                <span class="text-danger small" asp-validation-for="FullName"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                <span class="text-danger small" asp-validation-for="Email"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Create a password" />
+                <span class="text-danger small" asp-validation-for="Password"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Repeat password" />
+                <span class="text-danger small" asp-validation-for="ConfirmPassword"></span>
+            </div>
+
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="alert alert-danger py-2">
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <button type="submit" class="btn btn-brand w-100">
+                <i class="bi bi-person-plus me-1"></i> Register
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span class="text-muted">Already have an account?</span>
+            <a asp-page="/Account/Login" class="fw-semibold">Login</a>
+        </div>
     </div>
+</div>
 
-    <br />
-
-    <div>
-        <label>Email</label><br />
-        <input asp-for="Email" />
-        <span style="color:red" asp-validation-for="Email"></span>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Password</label><br />
-        <input asp-for="Password" type="password" />
-        <span style="color:red" asp-validation-for="Password"></span>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Confirm Password</label><br />
-        <input asp-for="ConfirmPassword" type="password" />
-        <span style="color:red" asp-validation-for="ConfirmPassword"></span>
-    </div>
-
-    <br />
-
-    <button type="submit">Register</button>
-</form>
-
-@if (Model.ErrorMessage != null)
-{
-<p style="color:red"><b>@Model.ErrorMessage</b></p>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-
-<p>Already have an account? <a asp-page="/Account/Login">Login</a></p>

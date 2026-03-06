@@ -1,34 +1,89 @@
+@* @page *@
+@* @model MinutAI.web.Pages.Account.LoginModel *@
+@* @{ *@
+@*     ViewData["Title"] = "Login"; *@
+@* } *@
+
+@* <h1>Login</h1> *@
+
+@* <form method="post"> *@
+@*     <div> *@
+@*         <label>Email</label><br /> *@
+@*         <input asp-for="Email" /> *@
+@*         <span style="color:red" asp-validation-for="Email"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <div> *@
+@*         <label>Password</label><br /> *@
+@*         <input asp-for="Password" type="password" /> *@
+@*         <span style="color:red" asp-validation-for="Password"></span> *@
+@*     </div> *@
+
+@*     <br /> *@
+
+@*     <button type="submit">Login</button> *@
+@* </form> *@
+
+@* @if (Model.ErrorMessage != null) *@
+@* { *@
+@* <p style="color:red"><b>@Model.ErrorMessage</b></p> *@
+@* } *@
+
+@* <p>New here? <a asp-page="/Account/Register">Create an account</a></p> *@
+
+
+
+
+
+
 @page
 @model MinutAI.web.Pages.Account.LoginModel
 @{
     ViewData["Title"] = "Login";
+    ViewData["BodyClass"] = "auth-page";
 }
 
-<h1>Login</h1>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <img src="~/images/MinutAI logo.png" class="auth-logo" alt="MinutAI Logo" />
 
-<form method="post">
-    <div>
-        <label>Email</label><br />
-        <input asp-for="Email" />
-        <span style="color:red" asp-validation-for="Email"></span>
+        <h2 class="auth-title">Sign in</h2>
+        <p class="text-center text-muted mb-4">Welcome back. Please login to continue.</p>
+
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                <span class="text-danger small" asp-validation-for="Email"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="••••••••" />
+                <span class="text-danger small" asp-validation-for="Password"></span>
+            </div>
+
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="alert alert-danger py-2">
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <button type="submit" class="btn btn-brand w-100">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span class="text-muted">New here?</span>
+            <a asp-page="/Account/Register" class="fw-semibold">Create an account</a>
+        </div>
     </div>
+</div>
 
-    <br />
-
-    <div>
-        <label>Password</label><br />
-        <input asp-for="Password" type="password" />
-        <span style="color:red" asp-validation-for="Password"></span>
-    </div>
-
-    <br />
-
-    <button type="submit">Login</button>
-</form>
-
-@if (Model.ErrorMessage != null)
-{
-<p style="color:red"><b>@Model.ErrorMessage</b></p>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-
-<p>New here? <a asp-page="/Account/Register">Create an account</a></p>
