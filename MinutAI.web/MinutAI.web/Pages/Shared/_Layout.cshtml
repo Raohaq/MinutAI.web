@@ -82,7 +82,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,10 +101,10 @@
     {
         <header class="app-header">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <div class="container">
+                @* container-fluid makes logo + content align to the left edge *@
+                <div class="container-fluid px-4">
                     <a class="navbar-brand d-flex align-items-center" asp-page="/Index">
                         <img src="~/images/MinutAI logo.png" class="brand-logo" alt="MinutAI" />
-                        <span class="fw-bold">MinutAI</span>
                     </a>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
@@ -117,7 +116,7 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link" asp-page="/Index">
-                                    <i class="bi bi-cloud-upload me-1"></i> Upload
+                                    Upload
                                 </a>
                             </li>
 
@@ -125,14 +124,14 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-page="/Meetings/History">
-                                        <i class="bi bi-clock-history me-1"></i> History
+                                        History
                                     </a>
                                 </li>
                             }
 
                             <li class="nav-item">
                                 <a class="nav-link" asp-page="/Privacy">
-                                    <i class="bi bi-shield-lock me-1"></i> Privacy
+                                    Privacy
                                 </a>
                             </li>
                         </ul>
@@ -169,14 +168,16 @@
     }
     else
     {
-        <div class="container py-4">
+        @* container-fluid so content can be wider; page-wrap still controls max width *@
+        <div class="container-fluid px-4 py-4">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
 
         <footer class="border-top footer text-muted">
-            <div class="container py-3">
+            @* footer at bottom-left *@
+            <div class="container-fluid px-4 py-3">
                 &copy; 2026 - MinutAI - <a asp-page="/Privacy">Privacy</a>
             </div>
         </footer>

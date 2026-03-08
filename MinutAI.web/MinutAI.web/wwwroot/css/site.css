@@ -1,47 +1,13 @@
-/*html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-body {
-    background: #f7f7f7 !important;
-}
-
-h1 {
-    color: red !important;
-}*/
-
-
-
-
-/* ---------- Theme base ---------- */
+﻿/* ---------- Theme base ---------- */
 :root {
-    --brand: #14a3b8; /* teal */
+    --brand: #14a3b8;
     --brand-dark: #0e7f90;
     --bg: #f6f8fb;
     --card: #ffffff;
     --text: #1f2a33;
     --muted: #6b7a88;
     --border: #e6edf2;
-    --shadow: 0 10px 25px rgba(16, 24, 40, 0.08);
+    --shadow: 0 10px 25px rgba(16,24,40,.08);
     --radius: 16px;
 }
 
@@ -51,28 +17,107 @@ html, body {
 
 body {
     background: var(--bg);
-    color: var(--text);
+    color: #141a20;
 }
 
+    /* ===== Make normal pages fill full height + footer at bottom-left ===== */
+    body:not(.auth-page) {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+        /* This targets your layout’s container (non-auth pages) */
+        body:not(.auth-page) .container.py-4 {
+            flex: 1; /* pushes footer to bottom */
+        }
+
+/* Footer alignment */
+.footer {
+    margin-top: auto;
+}
+
+    .footer .container {
+        text-align: left;
+        padding-left: 0;
+    }
+
+
 /* ---------- Teal header for normal pages ---------- */
-.app-header {
-    background: linear-gradient(90deg, var(--brand-dark), var(--brand));
+.app-header .navbar {
+    background: linear-gradient(90deg,
+    #dcdcdc 0%,
+    #7fd6df 18%,
+    #14a3b8 55%,
+    #2ea9b6 100%
+    );
     color: #fff;
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    align-items: center;
 }
 
 .navbar-brand .brand-logo {
-    height: 32px;
+    height: 72px; /* bigger logo */
     width: auto;
-    margin-right: 10px;
+    margin-right: 40px;
+    display: block;
 }
 
-.navbar .nav-link, .navbar .navbar-brand {
+.navbar-nav {
+    gap: 10px;
+}
+
+/* Keep logo + menu + logout on one line */
+.navbar .container-fluid {
+    flex-wrap: nowrap;
+}
+
+.navbar-collapse {
+    flex-grow: 1;
+}
+
+.navbar-nav {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: center;
+}
+
+.navbar-brand span.fw-bold {
+    font-size: 1.35rem;
+    letter-spacing: 0.2px;
+}
+
+/*.navbar .nav-link, .navbar .navbar-brand {
     color: #fff !important;
 }
 
     .navbar .nav-link:hover {
-        opacity: 0.9;
+        opacity: .9;
+    }*/
+/* Nav link styling (bigger text) */
+.navbar .nav-link, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar .nav-link {
+    font-size: 1.35rem; /* ✅ bigger */
+    font-weight: 600;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+    .navbar .nav-link:hover {
+        opacity: .9;
     }
+
+/* Logout button bigger */
+.navbar .btn.btn-outline-light {
+    font-size: 1.42rem; /* ✅ bigger */
+    font-weight: 600;
+    padding: 8px 14px;
+}
+
 
 /* ---------- Cards ---------- */
 .card-soft {
@@ -87,6 +132,7 @@ body {
         border-bottom: 1px solid var(--border);
         font-weight: 600;
     }
+
 
 /* ---------- Buttons ---------- */
 .btn-brand {
@@ -111,6 +157,7 @@ body {
         color: #fff;
     }
 
+
 /* ---------- Inputs ---------- */
 .form-control, .form-select {
     border-radius: 12px;
@@ -118,44 +165,89 @@ body {
 }
 
     .form-control:focus {
-        border-color: rgba(20, 163, 184, 0.4);
-        box-shadow: 0 0 0 0.2rem rgba(20, 163, 184, 0.15);
+        border-color: rgba(20,163,184,.4);
+        box-shadow: 0 0 0 .2rem rgba(20,163,184,.15);
     }
 
-/* ---------- Auth pages (Login/Register) ---------- */
+
+/* =========================================================
+   AUTH PAGES (Login/Register)
+   (UNCHANGED - you said you're fully satisfied)
+   ========================================================= */
+
 body.auth-page {
-    background: linear-gradient(135deg, #0e7f90 0%, #14a3b8 45%, #6ee7f0 100%);
+    background: radial-gradient(circle at 50% 8%, rgba(220,220,220,0.95) 0%, rgba(220,220,220,0.55) 22%, rgba(220,220,220,0.00) 45% ), linear-gradient(135deg, #2ea9b6 0%, #1b99a7 55%, #168a97 100%);
+    background-attachment: fixed;
 }
 
 .auth-wrap {
     min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 18px 20px 30px 20px;
 }
 
 .auth-card {
     width: 100%;
-    max-width: 440px;
-    background: rgba(255,255,255,0.92);
-    border-radius: 18px;
-    box-shadow: 0 18px 50px rgba(0,0,0,0.18);
-    border: 1px solid rgba(255,255,255,0.5);
-    padding: 22px;
+    max-width: 560px;
+    background: transparent !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0;
 }
 
 .auth-logo {
     display: block;
-    width: 220px;
-    max-width: 75%;
-    margin: 8px auto 18px auto;
+    width: 600px;
+    max-width: 96%;
+    height: auto;
+    margin: 0 auto 12px auto;
 }
 
 .auth-title {
     text-align: center;
-    font-weight: 700;
-    margin-bottom: 14px;
+    font-weight: 800;
+    color: #0b2230;
+    margin: 0 0 6px 0;
 }
+
+.auth-card .text-muted {
+    color: rgba(20,26,32,0.65) !important;
+    margin-bottom: 14px !important;
+    text-align: center;
+}
+
+.auth-card form {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.auth-card .form-control {
+    background: #dcdcdc !important;
+    border: none !important;
+    border-radius: 14px !important;
+    height: 46px;
+    padding: 10px 14px;
+}
+
+.auth-card .form-label {
+    font-weight: 700;
+    color: #0b2230;
+}
+
+.auth-card .btn-brand {
+    background: #2ea9b6 !important;
+    border: none !important;
+    height: 48px;
+    border-radius: 14px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+}
+
 
 /* ---------- Result boxes ---------- */
 .output-box {
@@ -165,17 +257,35 @@ body.auth-page {
     border-radius: 12px;
     border: 1px solid var(--border);
     padding: 12px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     background: #fbfdff;
 }
 
+
 /* ---------- Spacing helpers ---------- */
 .page-wrap {
-    max-width: 980px;
+    max-width: 1400px; /* ✅ wider main content (closer to 70%) */
     margin: 0 auto;
 }
 
 .section-title {
     font-weight: 700;
     margin-bottom: 10px;
+}
+
+/* Wider upload/results cards without affecting auth pages */
+.upload-card-wide {
+    max-width: 980px !important;
+}
+
+/* Bigger hero heading + paragraph */
+.hero-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    max-width: 980px;
+    margin: 0 auto;
 }

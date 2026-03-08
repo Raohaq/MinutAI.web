@@ -1,34 +1,128 @@
-﻿@page
+﻿@* @page *@
+@* @model IndexModel *@
+@* @{ *@
+@*     ViewData["Title"] = "MinutAI"; *@
+@* } *@
+
+@* <h1>MinutAI – Upload Meeting Audio</h1> *@
+
+@* <div style="max-width:900px; margin:auto;"> *@
+@*     <form method="post" enctype="multipart/form-data"> *@
+@*         <input type="file" name="AudioFile" required /> *@
+@*         <br /><br /> *@
+
+@*         <label> *@
+@*             <input type="checkbox" name="ConsentConfirmed" value="true" /> *@
+@*             I confirm this meeting was recorded with consent. *@
+@*         </label> *@
+
+@*         <br /><br /> *@
+
+@*         <div id="loading" style="display:none; margin-top:10px;"> *@
+@*             <b>Processing... please wait.</b> *@
+@*         </div> *@
+
+@*         <button type="submit" onclick="document.getElementById('loading').style.display='block';"> *@
+@*             Upload & Process *@
+@*         </button> *@
+@*     </form> *@
+@* </div> *@
+
+@* @if (Model.StatusMessage != null) *@
+@* { *@
+@* <p><b>@Model.StatusMessage</b></p> *@
+@* } *@
+
+
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "MinutAI";
+    ViewData["Title"] = "Upload";
 }
 
-<h1>MinutAI – Upload Meeting Audio</h1>
+<div class="page-wrap">
 
-<div style="max-width:900px; margin:auto;">
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="AudioFile" required />
-        <br /><br />
+    <!-- HERO -->
+    <div class="text-center my-5">
+        <h1 class="hero-title mb-2">Upload Meeting Audio</h1>
 
-        <label>
-            <input type="checkbox" name="ConsentConfirmed" value="true" />
-            I confirm this meeting was recorded with consent.
-        </label>
+        <p class="text-muted hero-subtitle mb-0">
+            MinutAI helps make meetings more productive by generating a transcript, a clear summary,
+            and actionable tasks from recorded meetings.
+        </p>
+    </div>
 
-        <br /><br />
-
-        <div id="loading" style="display:none; margin-top:10px;">
-            <b>Processing... please wait.</b>
+    <!-- MAIN CARD -->
+    <div class="card-soft p-5" style="max-width:1200px; margin:0 auto;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="fw-semibold">
+                <i class="bi bi-cloud-upload me-1"></i> Upload your audio file
+            </div>
+            <small class="text-muted">Supported: m4a, wav, mp3</small>
         </div>
 
-        <button type="submit" onclick="document.getElementById('loading').style.display='block';">
-            Upload & Process
-        </button>
-    </form>
+        <form method="post" enctype="multipart/form-data" onsubmit="return startLoading();">
+            <!-- Upload -->
+            <div class="mb-3">
+                <input class="form-control" type="file" name="AudioFile" required />
+            </div>
+
+            <!-- Consent -->
+            <div class="p-3 rounded-3 mb-3" style="border:1px solid var(--border); background:#fff;">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="ConsentConfirmed" value="true" id="consentCheck" required />
+                    <label class="form-check-label" for="consentCheck">
+                        I confirm this meeting was recorded with consent.
+                    </label>
+                </div>
+                <small class="text-muted d-block mt-1">
+                    The system only processes the file you upload and does not record meetings automatically.
+                </small>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="alert alert-info py-2 mb-3" style="display:none;">
+                <i class="bi bi-hourglass-split me-1"></i>
+                Processing... please wait (long meetings may take a few minutes).
+            </div>
+
+            <!-- CTA BUTTON -->
+            <div class="d-grid">
+                <button id="processBtn" type="submit" class="btn btn-brand btn-lg">
+                    <i class="bi bi-play-circle me-2"></i> Upload & Process
+                </button>
+            </div>
+        </form>
+
+        @if (Model.StatusMessage != null)
+        {
+            <div class="alert alert-secondary mt-3 mb-0">
+                <b>@Model.StatusMessage</b>
+            </div>
+        }
+    </div>
+
+    <div class="text-center text-muted small mt-3">
+        Tip: For very large files, exporting as <b>mp3</b> can improve upload speed.
+    </div>
+
 </div>
 
-@if (Model.StatusMessage != null)
-{
-<p><b>@Model.StatusMessage</b></p>
+@section Scripts {
+    <script>
+        function startLoading() {
+            // Show loading message
+            const loading = document.getElementById('loading');
+            if (loading) loading.style.display = 'block';
+
+            // Disable button so user can't double-submit
+            const btn = document.getElementById('processBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Processing...';
+            }
+
+            return true; // allow form submit
+        }
+    </script>
 }
