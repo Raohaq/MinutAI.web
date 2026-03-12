@@ -11,7 +11,6 @@ from urllib import request, error
 
 from faster_whisper import WhisperModel
 
-
 # ===========================
 # CONFIG (speed + stability)
 # ===========================
@@ -183,7 +182,6 @@ def dedupe_sentences(text: str) -> str:
 # DUE DATE HANDLING (prevents fake ISO 2023-01-06)
 # ===========================
 def extract_due_phrase(transcript: str) -> Optional[str]:
-    # "from January 5th to January 6th"
     m = re.search(
         r"\bfrom\s+((jan(?:uary)?)\s+\d{1,2}(st|nd|rd|th)?)\s+to\s+((jan(?:uary)?)\s+\d{1,2}(st|nd|rd|th)?)\b",
         transcript,
@@ -192,7 +190,6 @@ def extract_due_phrase(transcript: str) -> Optional[str]:
     if m:
         return f"{m.group(1)} to {m.group(4)}"
 
-    # "deadline was from the 5th of January to the 6th"
     m2 = re.search(
         r"\bfrom\s+the\s+(\d{1,2}(st|nd|rd|th)?)\s+of\s+(jan(?:uary)?)\s+to\s+the\s+(\d{1,2}(st|nd|rd|th)?)\b",
         transcript,
@@ -316,7 +313,7 @@ Rules:
 - No repeated sentences.
 - Action items: only real tasks, short (max 14 words), remove duplicates.
 - Due dates:
-  - Copy EXACTLY as spoken (e.g., "Jan 5 to Jan 6", "January 6th").
+  - Copy EXACTLY as spoken (e.g., "January 6th").
   - NEVER output YYYY-MM-DD.
   - Do NOT invent a year.
   - If unsure, due = null.

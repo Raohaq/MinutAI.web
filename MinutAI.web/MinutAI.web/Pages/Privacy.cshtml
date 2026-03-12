@@ -1,8 +1,49 @@
 ﻿@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="page-wrap">
+
+    <div class="text-center my-4">
+        <h1 class="hero-title mb-2" style="font-size:2.2rem;">Privacy & Data Use</h1>
+        <p class="text-muted hero-subtitle mb-0">
+            MinutAI is designed to process meeting recordings responsibly and transparently.
+        </p>
+    </div>
+
+    <div class="card-soft p-4" style="max-width:1200px; margin:0 auto;">
+        <h4 class="mb-2">What MinutAI processes</h4>
+        <p class="text-muted mb-3">
+            When you upload a meeting audio file, MinutAI processes it to generate a transcript, summary, and action items.
+            The app does not automatically record meetings, it only works with files you choose to upload.
+        </p>
+
+        <h4 class="mb-2">Consent</h4>
+        <p class="text-muted mb-3">
+            Users are responsible for ensuring recordings are made with consent of participants.
+            A consent checkbox is included before processing to encourage responsible use.
+        </p>
+
+        <h4 class="mb-2">Storage</h4>
+        <p class="text-muted mb-3">
+            Uploaded audio files and generated outputs (transcript, summary, action items) may be stored to support features like
+            meeting history and downloads. You can delete a meeting from your history at any time.
+        </p>
+
+        <h4 class="mb-2">Security & ethical handling</h4>
+        <ul class="text-muted mb-3">
+            <li>Only authenticated users can access their meeting history and results.</li>
+            <li>MinutAI is built with privacy-by-design principles and focuses on minimal data use.</li>
+            <li>The project follows responsible AI practices and avoids showing unsafe content in summaries/tasks where possible.</li>
+        </ul>
+
+        <h4 class="mb-2">Project note</h4>
+        <p class="text-muted mb-0">
+            This system is a university final year project prototype. It is not intended for high-risk or sensitive use without
+            further testing, compliance review, and security hardening.
+        </p>
+    </div>
+
+</div>

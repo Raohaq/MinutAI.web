@@ -257,8 +257,10 @@ body.auth-page {
     border-radius: 12px;
     border: 1px solid var(--border);
     padding: 12px;
-    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-family: inherit;
     background: #fbfdff;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 
@@ -288,4 +290,14 @@ body.auth-page {
     font-size: 1.1rem;
     max-width: 980px;
     margin: 0 auto;
+}
+
+/* Auth page spacing tweaks (logo + title) */
+body.auth-page .auth-wrap {
+    padding-top: 88px !important; /* adds space above the logo */
+}
+
+body.auth-page .auth-logo {
+    margin-top: 50px !important; /* extra gap above logo */
+    margin-bottom: 22px !important; /* space between logo and "Sign in" */
 }

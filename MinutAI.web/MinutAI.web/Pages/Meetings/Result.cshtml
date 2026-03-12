@@ -1,60 +1,149 @@
+@* @page *@
+@* @model MinutAI.web.Pages.Meetings.ResultModel *@
+@* @{ *@
+@*     ViewData["Title"] = "Meeting Results"; *@
+@* } *@
+
+@* <h2>Meeting Results</h2> *@
+
+@* <div class="mb-3"> *@
+@*     <a class="btn btn-secondary btn-sm" asp-page="/Meetings/History">History</a> *@
+@*     <a class="btn btn-success btn-sm" *@
+@*        asp-page="/Meetings/Result" *@
+@*        asp-route-id="@Model.Meeting?.Id" *@
+@*        asp-page-handler="DownloadAll"> *@
+@*         Download All (ZIP) *@
+@*     </a> *@
+@*         <a class="btn btn-primary btn-sm" asp-page="/Index">Process Another Meeting</a> *@
+@* </div> *@
+
+@* <hr /> *@
+
+@* <h3>Transcript</h3> *@
+@* <div class="mb-2"> *@
+@*     <a class="btn btn-outline-dark btn-sm" *@
+@*        asp-page="/Meetings/Result" *@
+@*        asp-route-id="@Model.Meeting?.Id" *@
+@*        asp-page-handler="Download" *@
+@*        asp-route-type="transcript"> *@
+@*         Download Transcript *@
+@*     </a> *@
+@* </div> *@
+@* <textarea rows="12" style="width:100%;" readonly>@Model.Meeting?.Transcript</textarea> *@
+
+@* <hr /> *@
+
+@* <h3>Summary</h3> *@
+@* <div class="mb-2"> *@
+@*     <a class="btn btn-outline-dark btn-sm" *@
+@*        asp-page="/Meetings/Result" *@
+@*        asp-route-id="@Model.Meeting?.Id" *@
+@*        asp-page-handler="Download" *@
+@*        asp-route-type="summary"> *@
+@*         Download Summary *@
+@*     </a> *@
+@* </div> *@
+@* <textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.Summary</textarea> *@
+
+@* <hr /> *@
+
+@* <h3>Action Items</h3> *@
+@* <div class="mb-2"> *@
+@*     <a class="btn btn-outline-dark btn-sm" *@
+@*        asp-page="/Meetings/Result" *@
+@*        asp-route-id="@Model.Meeting?.Id" *@
+@*        asp-page-handler="Download" *@
+@*        asp-route-type="actions"> *@
+@*         Download Action Items *@
+@*     </a> *@
+@* </div> *@
+@* <textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.ActionItems</textarea> *@
+
+
+
+
 @page
 @model MinutAI.web.Pages.Meetings.ResultModel
 @{
     ViewData["Title"] = "Meeting Results";
 }
 
-<h2>Meeting Results</h2>
+<div class="page-wrap">
 
-<div class="mb-3">
-    <a class="btn btn-secondary btn-sm" asp-page="/Meetings/History">History</a>
-    <a class="btn btn-success btn-sm"
-       asp-page="/Meetings/Result"
-       asp-route-id="@Model.Meeting?.Id"
-       asp-page-handler="DownloadAll">
-        Download All (ZIP)
-    </a>
-        <a class="btn btn-primary btn-sm" asp-page="/Index">Process Another Meeting</a>
+    <!-- Page heading + quick actions -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="hero-title mb-1" style="font-size:2.2rem;">Meeting Results</h1>
+            <p class="text-muted mb-0">Transcript, summary, and action items generated from your uploaded meeting.</p>
+        </div>
+
+        <div class="d-flex gap-2 mt-2 mt-md-0">
+            <a class="btn btn-outline-brand" asp-page="/Meetings/History">
+                <i class="bi bi-clock-history me-1"></i> History
+            </a>
+
+            <a class="btn btn-brand"
+               asp-page="/Meetings/Result"
+               asp-route-id="@Model.Meeting?.Id"
+               asp-page-handler="DownloadAll">
+                <i class="bi bi-file-earmark-zip me-1"></i> Download All
+            </a>
+
+            <a class="btn btn-outline-brand" asp-page="/Index">
+                <i class="bi bi-cloud-upload me-1"></i> New Upload
+            </a>
+        </div>
+    </div>
+
+    <!-- Transcript -->
+    <div class="card-soft p-4 mb-4" style="max-width:1350px; margin:0 auto;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="m-0">Transcript</h3>
+
+            <a class="btn btn-outline-brand btn-sm"
+               asp-page="/Meetings/Result"
+               asp-route-id="@Model.Meeting?.Id"
+               asp-page-handler="Download"
+               asp-route-type="transcript">
+                <i class="bi bi-download me-1"></i> Download
+            </a>
+        </div>
+
+        <textarea class="output-box" rows="12" readonly>@Model.Meeting?.Transcript</textarea>
+    </div>
+
+    <!-- Summary -->
+    <div class="card-soft p-4 mb-4" style="max-width:1350px; margin:0 auto;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="m-0">Summary</h3>
+
+            <a class="btn btn-outline-brand btn-sm"
+               asp-page="/Meetings/Result"
+               asp-route-id="@Model.Meeting?.Id"
+               asp-page-handler="Download"
+               asp-route-type="summary">
+                <i class="bi bi-download me-1"></i> Download
+            </a>
+        </div>
+
+        <textarea class="output-box" rows="8" readonly>@Model.Meeting?.Summary</textarea>
+    </div>
+
+    <!-- Action Items -->
+    <div class="card-soft p-4 mb-4" style="max-width:1350px; margin:0 auto;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="m-0">Action Items</h3>
+
+            <a class="btn btn-outline-brand btn-sm"
+               asp-page="/Meetings/Result"
+               asp-route-id="@Model.Meeting?.Id"
+               asp-page-handler="Download"
+               asp-route-type="actions">
+                <i class="bi bi-download me-1"></i> Download
+            </a>
+        </div>
+
+        <textarea class="output-box" rows="8" readonly>@Model.Meeting?.ActionItems</textarea>
+    </div>
+
 </div>
-
-<hr />
-
-<h3>Transcript</h3>
-<div class="mb-2">
-    <a class="btn btn-outline-dark btn-sm"
-       asp-page="/Meetings/Result"
-       asp-route-id="@Model.Meeting?.Id"
-       asp-page-handler="Download"
-       asp-route-type="transcript">
-        Download Transcript
-    </a>
-</div>
-<textarea rows="12" style="width:100%;" readonly>@Model.Meeting?.Transcript</textarea>
-
-<hr />
-
-<h3>Summary</h3>
-<div class="mb-2">
-    <a class="btn btn-outline-dark btn-sm"
-       asp-page="/Meetings/Result"
-       asp-route-id="@Model.Meeting?.Id"
-       asp-page-handler="Download"
-       asp-route-type="summary">
-        Download Summary
-    </a>
-</div>
-<textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.Summary</textarea>
-
-<hr />
-
-<h3>Action Items</h3>
-<div class="mb-2">
-    <a class="btn btn-outline-dark btn-sm"
-       asp-page="/Meetings/Result"
-       asp-route-id="@Model.Meeting?.Id"
-       asp-page-handler="Download"
-       asp-route-type="actions">
-        Download Action Items
-    </a>
-</div>
-<textarea rows="8" style="width:100%;" readonly>@Model.Meeting?.ActionItems</textarea>
